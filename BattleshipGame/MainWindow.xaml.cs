@@ -51,16 +51,16 @@ namespace BattleshipGame
                         Height = rectSize,
                         Width = rectSize,
                         Stroke = Brushes.Black,
-                        Fill = Brushes.RoyalBlue,
-                        Margin = new Thickness((ownFieldDistanceFromLeft + (c * rectSize)), (ownFieldDistanceFromTop + (r * rectSize)), 0, 0),
+                        Fill = Brushes.RoyalBlue
                     };
+                    ownField[r, c].SetValue(Canvas.LeftProperty, (double)(ownFieldDistanceFromLeft + (c * rectSize)));
+                    ownField[r, c].SetValue(Canvas.TopProperty, (double)(ownFieldDistanceFromTop + (r * rectSize)));
                     ownField[r, c].MouseEnter += OwnRectangle_MouseEnter;
                     ownField[r, c].MouseLeave += OwnRectangle_MouseLeave;
                     FieldCanvas.Children.Add(ownField[r, c]);
                 }
             }
-
-
+            
         }
 
         private void OwnRectangle_MouseEnter(object sender, MouseEventArgs e)
