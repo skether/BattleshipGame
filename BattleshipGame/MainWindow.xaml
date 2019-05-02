@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Canvas x:Name="FieldCanvas" Grid.Column="0" Grid.Row="0" Background="White"/>
+        <Button Grid.Column="1" Grid.Row="0" Content="Test" Click="Button_Click" />
     </Grid>
 </Window>
