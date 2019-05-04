@@ -27,8 +27,7 @@ namespace BattleshipGame
         private int ownFieldDistanceFromLeft = 10;
         private int ownFieldDistanceFromTop = 10;
 
-        private Rectangle[,] ownField;
-        private Rectangle[,] enemyField;
+        private Cell[,] ownField;
 
         public MainWindow()
         {
@@ -38,7 +37,7 @@ namespace BattleshipGame
 
         private void SetupGameField()
         {
-            ownField = new Rectangle[fieldRows, fieldCols];
+            ownField = new Cell[fieldRows, fieldCols];
 
             //Generate Rectangles for this player's field
             int rectSize = 20;
@@ -46,38 +45,29 @@ namespace BattleshipGame
             {
                 for (int c = 0; c < fieldCols; c++)
                 {
-                    ownField[r, c] = new Rectangle()
+                    ownField[r, c] = new Cell(r, c)
                     {
                         Height = rectSize,
-                        Width = rectSize,
-                        Stroke = Brushes.Black,
-                        Fill = Brushes.RoyalBlue
+                        Width = rectSize
                     };
                     ownField[r, c].SetValue(Canvas.LeftProperty, (double)(ownFieldDistanceFromLeft + (c * rectSize)));
                     ownField[r, c].SetValue(Canvas.TopProperty, (double)(ownFieldDistanceFromTop + (r * rectSize)));
-                    ownField[r, c].MouseEnter += OwnRectangle_MouseEnter;
-                    ownField[r, c].MouseLeave += OwnRectangle_MouseLeave;
+                    ownField[r, c].MouseLeftButtonDown += Cell_MouseLeftButtonDown;
                     FieldCanvas.Children.Add(ownField[r, c]);
                 }
             }
             
         }
 
-        private void OwnRectangle_MouseEnter(object sender, MouseEventArgs e)
+        private void Cell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Rectangle rect = sender as Rectangle;
-            if (rect != null) rect.Fill = Brushes.Red;
-        }
-
-        private void OwnRectangle_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Rectangle rect = sender as Rectangle;
-            if (rect != null) rect.Fill = Brushes.RoyalBlue;
+            if (sender is Cell cell) cell.IsHit = true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //rect.Fill = Brushes.Red;
+            ownField[9, 9].Width = 100;
+            ownField[9, 9].Height = 100;
         }
     }
 }
