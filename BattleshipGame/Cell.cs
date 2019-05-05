@@ -44,6 +44,10 @@ namespace BattleshipGame
             this._geometry = new RectangleGeometry();
             _geometry.Rect = new System.Windows.Rect(0, 0, this.Width, this.Height);
 
+            //this.SnapsToDevicePixels = true;
+            //this.UseLayoutRounding = true;
+            this.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+
             this.SizeChanged += Cell_SizeChanged;
             this.MouseEnter += Cell_MouseEnter;
             this.MouseLeave += Cell_MouseLeave;

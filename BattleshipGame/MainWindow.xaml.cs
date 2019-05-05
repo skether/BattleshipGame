@@ -50,8 +50,8 @@ namespace BattleshipGame
                         Height = rectSize,
                         Width = rectSize
                     };
-                    ownField[r, c].SetValue(Canvas.LeftProperty, (double)(ownFieldDistanceFromLeft + (c * rectSize)));
-                    ownField[r, c].SetValue(Canvas.TopProperty, (double)(ownFieldDistanceFromTop + (r * rectSize)));
+                    ownField[r, c].SetValue(Canvas.LeftProperty, (double)(ownFieldDistanceFromLeft + (c * (rectSize + 1))));
+                    ownField[r, c].SetValue(Canvas.TopProperty, (double)(ownFieldDistanceFromTop + (r * (rectSize + 1))));
                     ownField[r, c].MouseLeftButtonDown += Cell_MouseLeftButtonDown;
                     FieldCanvas.Children.Add(ownField[r, c]);
                 }
