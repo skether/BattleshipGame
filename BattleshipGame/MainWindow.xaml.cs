@@ -22,7 +22,8 @@ namespace BattleshipGame
     public partial class MainWindow : Window
     {
 
-        PlayField field;
+        PlayField ownField;
+        PlayField enemyField;
 
         public MainWindow()
         {
@@ -32,12 +33,9 @@ namespace BattleshipGame
 
         private void SetupGameField()
         {
-            field = new PlayField(FieldCanvas);
-        }
-
-        private void Cell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is Cell cell) cell.IsHit = true;
+            ownField = new PlayField(OwnFieldCanvas);
+            enemyField = new PlayField(EnemyFieldCanvas);
+            enemyField.Clickable = true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
