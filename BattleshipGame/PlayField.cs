@@ -28,8 +28,8 @@ namespace BattleshipGame
             {
                 for (int c = 0; c < ColumnCount; c++)
                 {
-                    cells[r, c] = new Cell(r, c);
-                    cells[r, c].MouseLeftButtonDown += Cell_MouseLeftButtonDown;
+                    cells[r, c] = new Cell(this, r, c);
+                    cells[r, c].InteractionEvent += Cell_InteractionEvent;
                     canvas.Children.Add(cells[r, c]);
                 }
             }
@@ -39,15 +39,28 @@ namespace BattleshipGame
             ResizeCells();
         }
 
+        private void Cell_InteractionEvent(object sender, InteractionEventArgs e)
+        {
+            switch (e.Type)
+            {
+                case InteractionType.Enter:
+                    break;
+                case InteractionType.Leave:
+                    break;
+                case InteractionType.LeftClick:
+                    if (!Clickable) return;
+                    if (sender is Cell cell) cell.IsHit = true;
+                    break;
+                case InteractionType.RightClick:
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void Canvas_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
         {
             ResizeCells();
-        }
-
-        private void Cell_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (!Clickable) return;
-            if (sender is Cell cell) cell.IsHit = true;
         }
 
         private void ResizeCells()
