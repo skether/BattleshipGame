@@ -19,13 +19,13 @@ namespace BattleshipGame
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class GameWindow : Window
     {
 
         PlayField ownField;
         PlayField enemyField;
 
-        public MainWindow()
+        public GameWindow()
         {
             InitializeComponent();
             SetupGameField();
