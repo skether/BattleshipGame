@@ -13,7 +13,7 @@ namespace BattleshipGame
         public static Brush borderColor = Brushes.Black;
         public static Brush waterColor = Brushes.LightBlue;
         public static Brush waterHitColor = Brushes.Blue;
-        public static Brush shipColor = Brushes.LightGray;
+        public static Brush shipColor = Brushes.Gray;
         public static Brush shipHitColor = Brushes.Red;
         public static Brush highlightColor = Brushes.LimeGreen;
 
