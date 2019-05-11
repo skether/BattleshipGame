@@ -17,7 +17,7 @@ namespace BattleshipGame
 
         private Canvas canvas;
         private Cell[,] cells;
-        
+
         public FieldState State { get; set; }
 
         public PlayField(Canvas canvas)
@@ -52,8 +52,32 @@ namespace BattleshipGame
             switch (e.Type)
             {
                 case InteractionType.Enter:
+                    switch (State)
+                    {
+                        case FieldState.ReadOnly:
+                            break;
+                        case FieldState.ShipPlacing:
+                            break;
+                        case FieldState.Attacking:
+                            cell.IsHighlighted = true;
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case InteractionType.Leave:
+                    switch (State)
+                    {
+                        case FieldState.ReadOnly:
+                            break;
+                        case FieldState.ShipPlacing:
+                            break;
+                        case FieldState.Attacking:
+                            cell.IsHighlighted = false;
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case InteractionType.LeftClick:
                     switch (State)

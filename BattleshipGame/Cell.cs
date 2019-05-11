@@ -67,13 +67,11 @@ namespace BattleshipGame
 
         private void Cell_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            this.IsHighlighted = true;
             InteractionEvent?.Invoke(this, new InteractionEventArgs(InteractionType.Enter));
         }
 
         private void Cell_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            this.IsHighlighted = false;
             InteractionEvent?.Invoke(this, new InteractionEventArgs(InteractionType.Leave));
         }
 
