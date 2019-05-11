@@ -3,6 +3,13 @@ using System.Windows.Controls;
 
 namespace BattleshipGame
 {
+    public enum FieldState
+    {
+        ReadOnly,
+        ShipPlacing,
+        Attacking
+    }
+
     internal class PlayField
     {
         public static int RowCount { get; set; } = 10;
@@ -10,15 +17,15 @@ namespace BattleshipGame
 
         private Canvas canvas;
         private Cell[,] cells;
-
-        public bool Clickable { get; set; }
+        
+        public FieldState State { get; set; }
 
         public PlayField(Canvas canvas)
         {
             this.canvas = canvas;
             this.canvas.Children.Clear();
 
-            this.Clickable = false;
+            this.State = FieldState.ReadOnly;
 
             cells = new Cell[RowCount, ColumnCount];
 
@@ -49,8 +56,18 @@ namespace BattleshipGame
                 case InteractionType.Leave:
                     break;
                 case InteractionType.LeftClick:
-                    if (!Clickable) return;
-                    cell.IsHit = true;
+                    switch (State)
+                    {
+                        case FieldState.ReadOnly:
+                            break;
+                        case FieldState.ShipPlacing:
+                            break;
+                        case FieldState.Attacking:
+                            cell.IsHit = true;
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case InteractionType.RightClick:
                     break;

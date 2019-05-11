@@ -35,7 +35,7 @@ namespace BattleshipGame
         {
             ownField = new PlayField(OwnFieldCanvas);
             enemyField = new PlayField(EnemyFieldCanvas);
-            enemyField.Clickable = true;
+            enemyField.State = FieldState.Attacking;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
