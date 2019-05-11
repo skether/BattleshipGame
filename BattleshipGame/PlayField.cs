@@ -22,83 +22,122 @@ namespace BattleshipGame
 
         public PlayField(Canvas canvas)
         {
+            //Setup the defaults
+            State = FieldState.ReadOnly;
+
+            //Setup the canvas
             this.canvas = canvas;
             this.canvas.Children.Clear();
 
-            this.State = FieldState.ReadOnly;
-
+            //Setup the cells
             cells = new Cell[RowCount, ColumnCount];
-
-            double cellSize = CalculateCellSize();
-
             for (int r = 0; r < RowCount; r++)
             {
                 for (int c = 0; c < ColumnCount; c++)
                 {
                     cells[r, c] = new Cell(this, r, c);
                     cells[r, c].InteractionEvent += Cell_InteractionEvent;
-                    canvas.Children.Add(cells[r, c]);
+                    this.canvas.Children.Add(cells[r, c]);
                 }
             }
 
-            this.canvas.SizeChanged += Canvas_SizeChanged;
-
+            //Size the cells
             ResizeCells();
+            this.canvas.SizeChanged += Canvas_SizeChanged;
         }
+
+        #region Cell Interaction
 
         private void Cell_InteractionEvent(object sender, InteractionEventArgs e)
         {
             if (!(sender is Cell cell)) return;
+
             switch (e.Type)
             {
+                //Interaction: Mouse Enter
                 case InteractionType.Enter:
                     switch (State)
                     {
                         case FieldState.ReadOnly:
                             break;
+
                         case FieldState.ShipPlacing:
                             break;
+
                         case FieldState.Attacking:
                             cell.IsHighlighted = true;
                             break;
+
                         default:
                             break;
                     }
                     break;
+
+                //Interaction: Mouse Leave
                 case InteractionType.Leave:
                     switch (State)
                     {
                         case FieldState.ReadOnly:
                             break;
+
                         case FieldState.ShipPlacing:
                             break;
+
                         case FieldState.Attacking:
                             cell.IsHighlighted = false;
                             break;
+
                         default:
                             break;
                     }
                     break;
+
+                //Interaction: Mouse Left Click
                 case InteractionType.LeftClick:
                     switch (State)
                     {
                         case FieldState.ReadOnly:
                             break;
+
                         case FieldState.ShipPlacing:
                             break;
+
                         case FieldState.Attacking:
                             cell.IsHit = true;
                             break;
+
                         default:
                             break;
                     }
                     break;
+
+                //Interaction: Mouse Right Click
                 case InteractionType.RightClick:
+                    switch (State)
+                    {
+                        case FieldState.ReadOnly:
+                            break;
+
+                        case FieldState.ShipPlacing:
+                            break;
+
+                        case FieldState.Attacking:
+                            break;
+
+                        default:
+                            break;
+                    }
                     break;
+
+                //Default
                 default:
                     break;
             }
         }
+
+        #endregion
+
+        #region Cell Size Management
 
         private void Canvas_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
         {
@@ -125,5 +164,7 @@ namespace BattleshipGame
             double size = Math.Floor(Math.Min((canvas.ActualWidth - (2 * ColumnCount)) / ColumnCount, (canvas.ActualHeight - (2 * RowCount)) / RowCount));
             return size < 0 ? 0 : size;
         }
+
+        #endregion
     }
 }

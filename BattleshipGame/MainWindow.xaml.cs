@@ -34,11 +34,10 @@ namespace BattleshipGame
         private void SetupGameField()
         {
             ownField = new PlayField(OwnFieldCanvas);
-            enemyField = new PlayField(EnemyFieldCanvas);
-            enemyField.State = FieldState.Attacking;
+            enemyField = new PlayField(EnemyFieldCanvas) { State = FieldState.Attacking };
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Test_Click(object sender, RoutedEventArgs e)
         {
 
         }

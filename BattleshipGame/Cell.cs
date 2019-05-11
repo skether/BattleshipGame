@@ -17,10 +17,8 @@ namespace BattleshipGame
         public static Brush shipHitColor = Brushes.Red;
         public static Brush highlightColor = Brushes.LimeGreen;
 
-        public int Row { get; set; }
-        public int Column { get; set; }
-
-        public PlayField ParentField { get; set; }
+        public int Row { get; private set; }
+        public int Column { get; private set; }
 
         private bool _isHighlighted;
         public bool IsHighlighted { get { return _isHighlighted; } set { _isHighlighted = value; UpdateFill(); } }
@@ -38,32 +36,33 @@ namespace BattleshipGame
 
         public Cell(PlayField parent, int row, int column)
         {
-            this.Stroke = borderColor;
-            this.StrokeThickness = 2;
-            this.Fill = waterColor;
+            //Setup row and column information
+            Row = row;
+            Column = column;
 
-            this.Row = row;
-            this.Column = column;
-            this.ParentField = parent;
+            //Setup the defaults
+            Stroke = borderColor;
+            StrokeThickness = 2;
+            Fill = waterColor;
 
-            this._geometry = new RectangleGeometry();
+            //Setup rendering options
+            SnapsToDevicePixels = true;
+            UseLayoutRounding = true;
+            SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+
+            //Setup the geometry
+            _geometry = new RectangleGeometry();
             UpdateSize();
 
-            this.SnapsToDevicePixels = true;
-            this.UseLayoutRounding = true;
-            this.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-
-            this.SizeChanged += Cell_SizeChanged;
-            this.MouseEnter += Cell_MouseEnter;
-            this.MouseLeave += Cell_MouseLeave;
-            this.MouseLeftButtonDown += Cell_MouseLeftClick;
-            this.MouseRightButtonDown += Cell_MouseRightClick;
+            //Setup events
+            SizeChanged += Cell_SizeChanged;
+            MouseEnter += Cell_MouseEnter;
+            MouseLeave += Cell_MouseLeave;
+            MouseLeftButtonDown += Cell_MouseLeftClick;
+            MouseRightButtonDown += Cell_MouseRightClick;
         }
 
-        private void Cell_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
-        {
-            UpdateSize();
-        }
+        #region Interaction
 
         private void Cell_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -85,12 +84,25 @@ namespace BattleshipGame
             InteractionEvent?.Invoke(this, new InteractionEventArgs(InteractionType.RightClick));
         }
 
+        #endregion
+
+        #region Sizing
+
+        private void Cell_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        {
+            UpdateSize();
+        }
+
         public void UpdateSize()
         {
             double w = this.Width - (2 * this.StrokeThickness);
             double h = this.Height - (2 * this.StrokeThickness);
             _geometry.Rect = new System.Windows.Rect(this.StrokeThickness, this.StrokeThickness, w < 0 ? 0 : w, h < 0 ? 0 : h);
         }
+
+        #endregion
+
+        #region Grapics
 
         private void UpdateFill()
         {
@@ -107,6 +119,8 @@ namespace BattleshipGame
                 this.Fill = IsHit ? waterHitColor : waterColor;
             }
         }
+
+        #endregion
     }
 
     enum InteractionType
@@ -123,7 +137,7 @@ namespace BattleshipGame
 
         public InteractionEventArgs(InteractionType type)
         {
-            this.Type = type;
+            Type = type;
         }
     }
 }
