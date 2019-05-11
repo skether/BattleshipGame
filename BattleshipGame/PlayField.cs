@@ -80,8 +80,8 @@ namespace BattleshipGame
 
         private double CalculateCellSize()
         {
-            double size = Math.Min(canvas.ActualWidth / ColumnCount, canvas.ActualHeight / RowCount);
-            return size < 1 ? size : size - 1;
+            double size = Math.Floor(Math.Min((canvas.ActualWidth - (2 * ColumnCount)) / ColumnCount, (canvas.ActualHeight - (2 * RowCount)) / RowCount));
+            return size < 0 ? 0 : size;
         }
     }
 }

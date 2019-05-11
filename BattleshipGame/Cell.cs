@@ -39,7 +39,7 @@ namespace BattleshipGame
         public Cell(PlayField parent, int row, int column)
         {
             this.Stroke = borderColor;
-            this.StrokeThickness = 1;
+            this.StrokeThickness = 2;
             this.Fill = waterColor;
 
             this.Row = row;
@@ -47,10 +47,10 @@ namespace BattleshipGame
             this.ParentField = parent;
 
             this._geometry = new RectangleGeometry();
-            _geometry.Rect = new System.Windows.Rect(0, 0, this.Width, this.Height);
+            UpdateSize();
 
-            //this.SnapsToDevicePixels = true;
-            //this.UseLayoutRounding = true;
+            this.SnapsToDevicePixels = true;
+            this.UseLayoutRounding = true;
             this.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
             this.SizeChanged += Cell_SizeChanged;
@@ -89,7 +89,9 @@ namespace BattleshipGame
 
         public void UpdateSize()
         {
-            _geometry.Rect = new System.Windows.Rect(0, 0, this.Width, this.Height);
+            double w = this.Width - (2 * this.StrokeThickness);
+            double h = this.Height - (2 * this.StrokeThickness);
+            _geometry.Rect = new System.Windows.Rect(this.StrokeThickness, this.StrokeThickness, w < 0 ? 0 : w, h < 0 ? 0 : h);
         }
 
         private void UpdateFill()
