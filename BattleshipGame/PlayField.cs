@@ -41,6 +41,7 @@ namespace BattleshipGame
 
         private void Cell_InteractionEvent(object sender, InteractionEventArgs e)
         {
+            if (!(sender is Cell cell)) return;
             switch (e.Type)
             {
                 case InteractionType.Enter:
@@ -49,7 +50,7 @@ namespace BattleshipGame
                     break;
                 case InteractionType.LeftClick:
                     if (!Clickable) return;
-                    if (sender is Cell cell) cell.IsHit = true;
+                    cell.IsHit = true;
                     break;
                 case InteractionType.RightClick:
                     break;
