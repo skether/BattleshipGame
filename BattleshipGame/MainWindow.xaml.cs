@@ -35,6 +35,14 @@ namespace BattleshipGame
         {
             ownField = new PlayField(OwnFieldCanvas);
             enemyField = new PlayField(EnemyFieldCanvas) { State = FieldState.Attacking };
+
+            ownField.PlacementFinished += OwnField_PlacementFinished;
+            ownField.PlaceShips(new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) });
+        }
+
+        private void OwnField_PlacementFinished(object sender, PlacementFinishedEventArgs e)
+        {
+            Debug.WriteLine("Ship Placement Finished!");
         }
 
         private void Test_Click(object sender, RoutedEventArgs e)
