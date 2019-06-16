@@ -21,20 +21,25 @@ namespace BattleshipGame
     /// </summary>
     public partial class GameWindow : Window
     {
+        public string PlayerName { get; set; }
 
         PlayField ownField;
         PlayField enemyField;
 
+        public event EventHandler<GameEventArgs> GameEventNotify;
+
         public GameWindow()
         {
             InitializeComponent();
+            DataContext = this;
+
             SetupGameField();
         }
 
         private void SetupGameField()
         {
             ownField = new PlayField(OwnFieldCanvas);
-            enemyField = new PlayField(EnemyFieldCanvas) { State = FieldState.Attacking };
+            enemyField = new PlayField(EnemyFieldCanvas);
 
             ownField.PlacementFinished += OwnField_PlacementFinished;
             ownField.PlaceShips(new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) });
@@ -42,12 +47,33 @@ namespace BattleshipGame
 
         private void OwnField_PlacementFinished(object sender, PlacementFinishedEventArgs e)
         {
-            Debug.WriteLine("Ship Placement Finished!");
+            GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.PlacementFinished, -1, -1));
         }
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
 
         }
+    }
+
+    public enum GameEvent
+    {
+        PlacementFinished,
+        Shot
+    }
+
+    public class GameEventArgs : EventArgs
+    {
+        public GameEvent Type { get; }
+        public int Row { get; }
+        public int Column { get; }
+
+        public GameEventArgs(GameEvent type, int row, int column)
+        {
+            Type = type;
+            Row = row;
+            Column = column;
+        }
+        
     }
 }
