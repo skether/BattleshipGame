@@ -24,10 +24,6 @@ namespace BattleshipGame
         public GameWindow(Player player)
         {
             InitializeComponent();
-        private void Test_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
             DataContext = player;
         }
     }
