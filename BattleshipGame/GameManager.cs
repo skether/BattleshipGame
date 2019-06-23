@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleshipGame
 {
-    class GameManager
+    public class GameManager
     {
         Player p1;
         Player p2;

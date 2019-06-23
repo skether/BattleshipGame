@@ -11,7 +11,7 @@ namespace BattleshipGame
         Attacking
     }
 
-    internal class PlayField
+    public class PlayField
     {
         public static int RowCount { get; set; } = 10;
         public static int ColumnCount { get; set; } = 10;
@@ -289,7 +289,7 @@ namespace BattleshipGame
         #endregion
     }
 
-    class PlacementFinishedEventArgs : EventArgs
+    public class PlacementFinishedEventArgs : EventArgs
     {
         List<Ship> Ships { get; }
 
