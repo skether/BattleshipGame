@@ -11,6 +11,8 @@ namespace BattleshipGame
     {
         public int ID { get; }
         public string Name { get; }
+        public List<Ship> Ships { get; private set; }
+        public bool Active { get; set; }
 
         GameWindow window;
         PlayField ownField;
@@ -22,6 +24,9 @@ namespace BattleshipGame
         {
             ID = id;
             Name = name;
+
+            Ships = new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) };
+
             window = new GameWindow(this);
             window.Closed += Window_Closed;
             window.Loaded += Window_Loaded;
@@ -38,7 +43,7 @@ namespace BattleshipGame
             enemyField = new PlayField(window.EnemyFieldCanvas);
 
             ownField.PlacementFinished += OwnField_PlacementFinished;
-            ownField.PlaceShips(new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) });
+            ownField.PlaceShips(Ships);
         }
 
         private void OwnField_PlacementFinished(object sender, PlacementFinishedEventArgs e)
