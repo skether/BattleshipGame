@@ -69,8 +69,22 @@ namespace BattleshipGame
 
             if (otherPlayer.Hit(cell.Row, cell.Column)) cell.IsShip = true;
 
+            if(CheckShips(otherPlayer))
+            {
+                ///TODO: Game End
+            }
+
             currentPlayer.Active = false;
             otherPlayer.Active = true;
+        }
+
+        private bool CheckShips(Player player)
+        {
+            foreach (Ship cShip in player.Ships)
+            {
+                if (cShip.cells.Count(x => !x.IsHit) > 0) return false;
+            }
+            return true;
         }
 
         public void Start()
