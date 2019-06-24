@@ -18,6 +18,7 @@ namespace BattleshipGame
 
         private Canvas canvas;
         private Cell[,] cells;
+        public Cell this[int row, int column] { get { return cells[row, column]; } }
 
         public FieldState State { get; set; }
 
