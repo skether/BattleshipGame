@@ -294,7 +294,7 @@ namespace BattleshipGame
 
     public class CellHitEventArgs : EventArgs
     {
-        Cell Target { get; }
+        public Cell Target { get; }
 
         public CellHitEventArgs(Cell cell)
         {
@@ -304,7 +304,7 @@ namespace BattleshipGame
 
     public class PlacementFinishedEventArgs : EventArgs
     {
-        List<Ship> Ships { get; }
+        public List<Ship> Ships { get; }
 
         public PlacementFinishedEventArgs(List<Ship> ships)
         {
