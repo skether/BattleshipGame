@@ -31,6 +31,13 @@ namespace BattleshipGame
             switch (e.Type)
             {
                 case GameEvent.PlacementFinished:
+                    switch (player.ID)
+                    {
+                        case 1: p2.Start(); break;
+                        case 2: p1.Active = true; break;
+                        default:
+                            break;
+                    }
                     break;
                 case GameEvent.Hit:
                     ProcessHit(player, e.Target);
@@ -61,12 +68,17 @@ namespace BattleshipGame
             if (otherPlayer == null) return;
 
             if (otherPlayer.Hit(cell.Row, cell.Column)) cell.IsShip = true;
+
+            currentPlayer.Active = false;
+            otherPlayer.Active = true;
         }
 
         public void Start()
         {
             p1.Show();
             if (!p2ai) p2.Show();
+
+            p1.Start();
         }
 
         void Finish()

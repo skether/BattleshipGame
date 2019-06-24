@@ -12,7 +12,9 @@ namespace BattleshipGame
         public int ID { get; }
         public string Name { get; }
         public List<Ship> Ships { get; private set; }
-        public bool Active { get; set; }
+
+        private bool _active;
+        public bool Active { get { return _active; } set { _active = value; ManageTurn(); } }
 
         GameWindow window;
         PlayField ownField;
@@ -24,6 +26,8 @@ namespace BattleshipGame
         {
             ID = id;
             Name = name;
+
+            _active = false;
 
             Ships = new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) };
 
@@ -45,7 +49,6 @@ namespace BattleshipGame
             enemyField.CellHit += EnemyField_CellHit;
 
             ownField.PlacementFinished += OwnField_PlacementFinished;
-            ownField.PlaceShips(Ships);
         }
 
         private void EnemyField_CellHit(object sender, CellHitEventArgs e)
@@ -56,7 +59,6 @@ namespace BattleshipGame
         private void OwnField_PlacementFinished(object sender, PlacementFinishedEventArgs e)
         {
             GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.PlacementFinished, null));
-            enemyField.State = FieldState.Attacking;
         }
 
         public bool Hit(int row, int column)
@@ -65,6 +67,20 @@ namespace BattleshipGame
             cell.IsHit = true;
             return cell.IsShip;
         }
+
+        private void ManageTurn()
+        {
+            if(Active)
+            {
+                enemyField.State = FieldState.Attacking;
+            }
+            else
+            {
+                enemyField.State = FieldState.ReadOnly;
+            }
+        }
+
+        public void Start() { ownField.PlaceShips(Ships); }
 
         public void Show() { window.Show(); }
 
