@@ -32,7 +32,8 @@ namespace BattleshipGame
             {
                 case GameEvent.PlacementFinished:
                     break;
-                case GameEvent.Shot:
+                case GameEvent.Hit:
+                    ProcessHit(player, e.Target);
                     break;
                 case GameEvent.Exit:
                     switch (player.ID)
@@ -46,6 +47,20 @@ namespace BattleshipGame
                 default:
                     break;
             }
+        }
+
+        private void ProcessHit(Player currentPlayer, Cell cell)
+        {
+            Player otherPlayer = null;
+            switch (currentPlayer.ID)
+            {
+                case 1: otherPlayer = p2; break;
+                case 2: otherPlayer = p1; break;
+                default: break;
+            }
+            if (otherPlayer == null) return;
+
+            if (otherPlayer.Hit(cell.Row, cell.Column)) cell.IsShip = true;
         }
 
         public void Start()
@@ -63,21 +78,19 @@ namespace BattleshipGame
     public enum GameEvent
     {
         PlacementFinished,
-        Shot,
+        Hit,
         Exit
     }
 
     public class GameEventArgs : EventArgs
     {
         public GameEvent Type { get; }
-        public int Row { get; }
-        public int Column { get; }
+        public Cell Target { get; }
 
-        public GameEventArgs(GameEvent type, int row, int column)
+        public GameEventArgs(GameEvent type, Cell cell)
         {
             Type = type;
-            Row = row;
-            Column = column;
+            Target = cell;
         }
     }
 }
