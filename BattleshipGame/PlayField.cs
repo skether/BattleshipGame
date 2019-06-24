@@ -27,6 +27,8 @@ namespace BattleshipGame
         private List<Cell> shipPreviewCells;
         public event EventHandler<PlacementFinishedEventArgs> PlacementFinished;
 
+        public event EventHandler<CellHitEventArgs> CellHit;
+
         public PlayField(Canvas canvas)
         {
             //Setup the defaults
@@ -223,6 +225,7 @@ namespace BattleshipGame
 
                         case FieldState.Attacking:
                             cell.IsHit = true;
+                            CellHit?.Invoke(this, new CellHitEventArgs(cell));
                             break;
 
                         default:
@@ -287,6 +290,16 @@ namespace BattleshipGame
         }
 
         #endregion
+    }
+
+    public class CellHitEventArgs : EventArgs
+    {
+        Cell Target { get; }
+
+        public CellHitEventArgs(Cell cell)
+        {
+            Target = cell;
+        }
     }
 
     public class PlacementFinishedEventArgs : EventArgs
