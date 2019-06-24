@@ -198,6 +198,7 @@ namespace BattleshipGame
                     switch (State)
                     {
                         case FieldState.ReadOnly:
+                            cell.IsHighlighted = false;
                             break;
 
                         case FieldState.ShipPlacing:
@@ -225,6 +226,8 @@ namespace BattleshipGame
                             break;
 
                         case FieldState.Attacking:
+                            if (cell.IsHit) break;
+                            cell.IsHighlighted = false;
                             cell.IsHit = true;
                             CellHit?.Invoke(this, new CellHitEventArgs(cell));
                             break;
