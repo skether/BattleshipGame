@@ -11,13 +11,14 @@ namespace BattleshipGame
         Attacking
     }
 
-    internal class PlayField
+    public class PlayField
     {
         public static int RowCount { get; set; } = 10;
         public static int ColumnCount { get; set; } = 10;
 
         private Canvas canvas;
         private Cell[,] cells;
+        public Cell this[int row, int column] { get { return cells[row, column]; } }
 
         public FieldState State { get; set; }
 
@@ -26,6 +27,8 @@ namespace BattleshipGame
         private List<Ship> ships;
         private List<Cell> shipPreviewCells;
         public event EventHandler<PlacementFinishedEventArgs> PlacementFinished;
+
+        public event EventHandler<CellHitEventArgs> CellHit;
 
         public PlayField(Canvas canvas)
         {
@@ -195,6 +198,7 @@ namespace BattleshipGame
                     switch (State)
                     {
                         case FieldState.ReadOnly:
+                            cell.IsHighlighted = false;
                             break;
 
                         case FieldState.ShipPlacing:
@@ -222,7 +226,10 @@ namespace BattleshipGame
                             break;
 
                         case FieldState.Attacking:
+                            if (cell.IsHit) break;
+                            cell.IsHighlighted = false;
                             cell.IsHit = true;
+                            CellHit?.Invoke(this, new CellHitEventArgs(cell));
                             break;
 
                         default:
@@ -289,9 +296,19 @@ namespace BattleshipGame
         #endregion
     }
 
-    class PlacementFinishedEventArgs : EventArgs
+    public class CellHitEventArgs : EventArgs
     {
-        List<Ship> Ships { get; }
+        public Cell Target { get; }
+
+        public CellHitEventArgs(Cell cell)
+        {
+            Target = cell;
+        }
+    }
+
+    public class PlacementFinishedEventArgs : EventArgs
+    {
+        public List<Ship> Ships { get; }
 
         public PlacementFinishedEventArgs(List<Ship> ships)
         {

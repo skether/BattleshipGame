@@ -20,14 +20,11 @@ namespace BattleshipGame
     /// </summary>
     public partial class MainWindow : Window
     {
-        GameWindow p1Window;
-        GameWindow p2Window;
+        GameManager gameManager = null;
 
         public MainWindow()
         {
             InitializeComponent();
-            p1Window = null;
-            p2Window = null;
         }
 
         private void PlayerTwoAICheckbox_Checked(object sender, RoutedEventArgs e)
@@ -42,39 +39,34 @@ namespace BattleshipGame
             playerTwoName.IsEnabled = true;
         }
 
-        private void CheckNames()
+        private bool CheckNames()
         {
             if (playerOneName.Text.Length == 0) playerOneName.Text = "Játékos 1";
             if (playerTwoName.Text.Length == 0) playerTwoName.Text = "Játékos 2";
+
+            if (playerOneName.Text == playerTwoName.Text)
+            {
+                MessageBox.Show("Nem játszhatsz önmagad ellen! :)", "Hiba!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
 
         private void StartGame(object sender, RoutedEventArgs e)
         {
-            CheckNames();
+            if (!CheckNames()) return;
 
-            //Setup Player1
-            p1Window = new GameWindow() { PlayerName = playerOneName.Text };
-            p1Window.Closed += GameWindow_Closed;
+            gameManager = new GameManager(playerOneName.Text, playerTwoName.Text, playerTwoAICheckbox.IsChecked ?? false);
+            gameManager.GameFinished += GameManager_GameFinished;
 
-            //Setup Player2
-            p2Window = new GameWindow() { PlayerName = playerTwoName.Text };
-            p2Window.Closed += GameWindow_Closed;
-            if (playerTwoAICheckbox.IsChecked == true) p2Window.Hide();
-
-            //Show the Game windows and hide this one!
-            p1Window.Show();
-            if (playerTwoAICheckbox.IsChecked == false) p2Window.Show();
+            gameManager.Start();
             this.Hide();
         }
 
-        private void GameWindow_Closed(object sender, EventArgs e)
+        private void GameManager_GameFinished(object sender, EventArgs e)
         {
-            if (!(sender is GameWindow window)) return;
-            if (window == p1Window) p2Window.Close();
-            else p1Window.Close();
             this.Show();
-
-            ///TODO: Handle forfeit
+            gameManager = null;
         }
     }
 }

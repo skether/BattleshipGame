@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace BattleshipGame
 {
-    internal class Cell : Shape
+    public class Cell : Shape
     {
         public static Brush borderColor = Brushes.Black;
         public static Brush waterColor = Brushes.LightBlue;
@@ -123,7 +123,7 @@ namespace BattleshipGame
         #endregion
     }
 
-    enum InteractionType
+    public enum InteractionType
     {
         Enter,
         Leave,
@@ -131,7 +131,7 @@ namespace BattleshipGame
         RightClick
     }
 
-    class InteractionEventArgs : EventArgs
+    public class InteractionEventArgs : EventArgs
     {
         public InteractionType Type { get; }
 

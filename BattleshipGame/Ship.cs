@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleshipGame
 {
-    class Ship
+    public class Ship
     {
         public int Size { get; private set; }
         public bool IsHorizontal { get; set; }
