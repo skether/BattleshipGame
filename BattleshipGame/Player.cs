@@ -77,7 +77,7 @@ namespace BattleshipGame
 
         public virtual void ShipSunk() { }
 
-        protected void Shoot(Cell target)
+        protected virtual void Shoot(Cell target)
         {
             GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.Hit, target));
         }
