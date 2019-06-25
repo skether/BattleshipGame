@@ -10,7 +10,6 @@ namespace BattleshipGame
     {
         Player p1;
         Player p2;
-        bool p2ai;
 
         public bool InProgress { get; private set; }
 
@@ -19,8 +18,8 @@ namespace BattleshipGame
         public GameManager(string p1name, string p2name, bool ai)
         {
             p1 = new HumanPlayer(1, p1name);
-            p2 = new HumanPlayer(2, p2name);
-            p2ai = ai;
+            if (ai) p2 = new ArtificialPlayer(2, p2name);
+            else p2 = new HumanPlayer(2, p2name);
 
             InProgress = false;
 
@@ -97,7 +96,7 @@ namespace BattleshipGame
         public void Start()
         {
             p1.Show();
-            if (!p2ai) p2.Show();
+            p2.Show();
 
             p1.Start();
 
