@@ -44,8 +44,8 @@ namespace BattleshipGame
 
             _active = false;
 
-            //Ships = new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) };
-            Ships = new List<Ship>() { new Ship(2) };
+            Ships = new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) };
+            //Ships = new List<Ship>() { new Ship(2) };
 
             window = new GameWindow(this);
             window.Closed += Window_Closed;

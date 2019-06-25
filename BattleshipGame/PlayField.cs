@@ -86,10 +86,10 @@ namespace BattleshipGame
             shipPreviewCells.Clear();
         }
 
-        private void PlaceCurrentShip(Cell anchor)
+        public bool PlaceCurrentShip(Cell anchor)
         {
             List<Cell> candidates = CalculateShipCells(anchor);
-            if (candidates.Count == 0) return; //Couldn't place ship in this position!
+            if (candidates.Count == 0) return false; //Couldn't place ship in this position!
 
             foreach (Cell cell in candidates) cell.IsShip = true;
             currentShip.cells = candidates;
@@ -108,6 +108,8 @@ namespace BattleshipGame
                 currentShipIndex = -1;
                 State = FieldState.ReadOnly;
             }
+
+            return true;
         }
 
         private List<Cell> CalculateShipCells(Cell anchor)
