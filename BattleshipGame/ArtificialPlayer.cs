@@ -12,7 +12,12 @@ namespace BattleshipGame
     {
         private static readonly int MaximumShipPlacementTries = 100;
 
-        public ArtificialPlayer(int id, string name) : base(id, name) { }
+        private Random random;
+
+        public ArtificialPlayer(int id, string name) : base(id, name)
+        {
+            random = new Random();
+        }
 
         protected override void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -38,18 +43,17 @@ namespace BattleshipGame
             ownField.PlaceShips(Ships);
             ownField.State = FieldState.ReadOnly;
 
-            Random random = new Random();
             foreach (Ship cShip in Ships)
             {
                 int tryCount = 0;
                 cShip.IsHorizontal = random.Next(2) == 0;
-                while (!ownField.PlaceCurrentShip(ownField[random.Next(0, PlayField.RowCount), random.Next(0, PlayField.ColumnCount)]) && tryCount < MaximumShipPlacementTries) tryCount++;
+                while (!ownField.PlaceCurrentShip(GetRandomCell(ownField)) && tryCount < MaximumShipPlacementTries) tryCount++;
 
                 if (tryCount < MaximumShipPlacementTries) continue;
 
                 cShip.IsHorizontal = !cShip.IsHorizontal;
                 tryCount = 0;
-                while (!ownField.PlaceCurrentShip(ownField[random.Next(0, PlayField.RowCount), random.Next(0, PlayField.ColumnCount)]) && tryCount < MaximumShipPlacementTries) tryCount++;
+                while (!ownField.PlaceCurrentShip(GetRandomCell(ownField)) && tryCount < MaximumShipPlacementTries) tryCount++;
 
                 if (tryCount >= MaximumShipPlacementTries)
                 {
@@ -61,6 +65,11 @@ namespace BattleshipGame
 
         protected override void ActTurn()
         {
+        }
+
+        private Cell GetRandomCell(PlayField field)
+        {
+            return field[random.Next(PlayField.RowCount), random.Next(PlayField.ColumnCount)];
         }
     }
 }
