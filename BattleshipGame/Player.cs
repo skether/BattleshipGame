@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace BattleshipGame
 {
-    public class Player
+    public abstract class Player
     {
         public static Brush inactiveBackground = Brushes.SlateGray;
         public static Brush activeBackground = Brushes.White;
@@ -21,19 +21,19 @@ namespace BattleshipGame
         public static string textYouWin = "Nyertél!";
         public static string textYouLose = "Vesztettél!";
 
-        public int ID { get; }
-        public string Name { get; }
-        public List<Ship> Ships { get; private set; }
+        public int ID { get; protected set; }
+        public string Name { get; protected set; }
+        public List<Ship> Ships { get; protected set; }
 
-        private bool _active;
+        protected bool _active;
         public bool Active { get { return _active; } set { _active = value; ManageTurn(); } }
-        public bool Ready { get; private set; }
+        public bool Ready { get; protected set; }
 
-        private Brush BackgroundColor { get { return window.Background; } set { window.Background = value; window.OwnFieldCanvas.Background = value; window.EnemyFieldCanvas.Background = value; } }
+        protected Brush BackgroundColor { get { return window.Background; } set { window.Background = value; window.OwnFieldCanvas.Background = value; window.EnemyFieldCanvas.Background = value; } }
 
-        GameWindow window;
-        PlayField ownField;
-        PlayField enemyField;
+        protected GameWindow window;
+        protected PlayField ownField;
+        protected PlayField enemyField;
 
         public event EventHandler<GameEventArgs> GameEventNotify;
 
@@ -43,43 +43,28 @@ namespace BattleshipGame
             Name = name;
 
             _active = false;
-
-            //Ships = new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) };
-            Ships = new List<Ship>() { new Ship(2) };
+            
+            Ships = new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) };
 
             window = new GameWindow(this);
             window.Closed += Window_Closed;
             window.Loaded += Window_Loaded;
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        protected virtual void Window_Closed(object sender, EventArgs e)
         {
             Ready = false;
             GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.Exit, null));
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        protected virtual void Window_Loaded(object sender, RoutedEventArgs e)
         {
             BackgroundColor = inactiveBackground;
 
             ownField = new PlayField(window.OwnFieldCanvas);
             enemyField = new PlayField(window.EnemyFieldCanvas);
 
-            enemyField.CellHit += EnemyField_CellHit;
-
-            ownField.PlacementFinished += OwnField_PlacementFinished;
-
             Ready = true;
-        }
-
-        private void EnemyField_CellHit(object sender, CellHitEventArgs e)
-        {
-            GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.Hit, e.Target));
-        }
-
-        private void OwnField_PlacementFinished(object sender, PlacementFinishedEventArgs e)
-        {
-            GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.PlacementFinished, null));
         }
 
         public bool Hit(int row, int column)
@@ -89,27 +74,36 @@ namespace BattleshipGame
             return cell.IsShip;
         }
 
-        private void ManageTurn()
+        public virtual void ShipSunk() { }
+
+        protected virtual void Shoot(Cell target)
         {
-            if(Active)
+            GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.Hit, target));
+        }
+
+        protected void RaisePlacementFinished()
+        {
+            GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.PlacementFinished, null));
+        }
+
+        public abstract void Start();
+
+        protected virtual void ManageTurn()
+        {
+            if (Active)
             {
-                enemyField.State = FieldState.Attacking;
                 BackgroundColor = activeBackground;
                 window.StatusText.Text = textTakeYourShot;
             }
             else
             {
-                enemyField.State = FieldState.ReadOnly;
                 BackgroundColor = inactiveBackground;
                 window.StatusText.Text = textPleaseWait;
             }
+            ActTurn();
         }
 
-        public void Start()
-        {
-            ownField.PlaceShips(Ships);
-            window.StatusText.Text = textPlaceYourShips;
-        }
+        protected abstract void ActTurn();
 
         public void End(bool victory)
         {
@@ -123,5 +117,6 @@ namespace BattleshipGame
         public void Hide() { window.Hide(); }
 
         public void Close() { window.Close(); }
+
     }
 }

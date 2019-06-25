@@ -10,7 +10,6 @@ namespace BattleshipGame
     {
         Player p1;
         Player p2;
-        bool p2ai;
 
         public bool InProgress { get; private set; }
 
@@ -18,9 +17,9 @@ namespace BattleshipGame
 
         public GameManager(string p1name, string p2name, bool ai)
         {
-            p1 = new Player(1, p1name);
-            p2 = new Player(2, p2name);
-            p2ai = ai;
+            p1 = new HumanPlayer(1, p1name);
+            if (ai) p2 = new ArtificialPlayer(2, p2name);
+            else p2 = new HumanPlayer(2, p2name);
 
             InProgress = false;
 
@@ -73,9 +72,13 @@ namespace BattleshipGame
             }
             if (otherPlayer == null) return;
 
-            if (otherPlayer.Hit(cell.Row, cell.Column)) cell.IsShip = true;
+            if (otherPlayer.Hit(cell.Row, cell.Column))
+            {
+                cell.IsShip = true;
+                if (Ship.WhichShip(otherPlayer.Ships, cell.Row, cell.Column).IsSunk) currentPlayer.ShipSunk();
+            }
 
-            if(CheckShips(otherPlayer))
+            if(otherPlayer.Ships.Count(x => !x.IsSunk) == 0)
             {
                 End(currentPlayer, otherPlayer);
                 return;
@@ -85,19 +88,10 @@ namespace BattleshipGame
             otherPlayer.Active = true;
         }
 
-        private bool CheckShips(Player player)
-        {
-            foreach (Ship cShip in player.Ships)
-            {
-                if (cShip.cells.Count(x => x.IsHit == false) > 0) return false;
-            }
-            return true;
-        }
-
         public void Start()
         {
             p1.Show();
-            if (!p2ai) p2.Show();
+            p2.Show();
 
             p1.Start();
 
