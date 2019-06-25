@@ -21,7 +21,7 @@ namespace BattleshipGame
     /// </summary>
     public partial class GameWindow : Window
     {
-        public GameWindow(Player player)
+        public GameWindow(HumanPlayer player)
         {
             InitializeComponent();
             DataContext = player;

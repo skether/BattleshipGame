@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace BattleshipGame
 {
-    public class Player
+    public class HumanPlayer
     {
         public static Brush inactiveBackground = Brushes.SlateGray;
         public static Brush activeBackground = Brushes.White;
@@ -37,7 +37,7 @@ namespace BattleshipGame
 
         public event EventHandler<GameEventArgs> GameEventNotify;
 
-        public Player(int id, string name)
+        public HumanPlayer(int id, string name)
         {
             ID = id;
             Name = name;
