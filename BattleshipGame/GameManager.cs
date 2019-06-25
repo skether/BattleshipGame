@@ -8,8 +8,8 @@ namespace BattleshipGame
 {
     public class GameManager
     {
-        HumanPlayer p1;
-        HumanPlayer p2;
+        Player p1;
+        Player p2;
         bool p2ai;
 
         public bool InProgress { get; private set; }
@@ -30,7 +30,7 @@ namespace BattleshipGame
 
         private void Player_GameEvent(object sender, GameEventArgs e)
         {
-            if (!(sender is HumanPlayer player)) return;
+            if (!(sender is Player player)) return;
 
             switch (e.Type)
             {
@@ -62,9 +62,9 @@ namespace BattleshipGame
             }
         }
 
-        private void ProcessHit(HumanPlayer currentPlayer, Cell cell)
+        private void ProcessHit(Player currentPlayer, Cell cell)
         {
-            HumanPlayer otherPlayer = null;
+            Player otherPlayer = null;
             switch (currentPlayer.ID)
             {
                 case 1: otherPlayer = p2; break;
@@ -85,7 +85,7 @@ namespace BattleshipGame
             otherPlayer.Active = true;
         }
 
-        private bool CheckShips(HumanPlayer player)
+        private bool CheckShips(Player player)
         {
             foreach (Ship cShip in player.Ships)
             {
@@ -104,7 +104,7 @@ namespace BattleshipGame
             InProgress = true;
         }
 
-        public void End(HumanPlayer winner, HumanPlayer looser)
+        public void End(Player winner, Player looser)
         {
             InProgress = false;
             winner.End(true);

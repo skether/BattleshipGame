@@ -75,6 +75,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="HumanPlayer.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Ship.cs" />
     <Page Include="GameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
