@@ -13,6 +13,8 @@ namespace BattleshipGame
 
         public List<Cell> cells;
 
+        public bool IsSunk { get { return cells.Count(x => !x.IsHit) == 0; } }
+
         public Ship(int size)
         {
             if (size < 1 || size > Math.Min(PlayField.ColumnCount, PlayField.RowCount)) throw new ArgumentOutOfRangeException("size", size, "Size is not allowed to be greater than the smallest dimension of the playfield, or to be smaller than 1.");

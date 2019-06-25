@@ -74,7 +74,7 @@ namespace BattleshipGame
 
             if (otherPlayer.Hit(cell.Row, cell.Column)) cell.IsShip = true;
 
-            if(CheckShips(otherPlayer))
+            if(otherPlayer.Ships.Count(x => !x.IsSunk) == 0)
             {
                 End(currentPlayer, otherPlayer);
                 return;
@@ -82,15 +82,6 @@ namespace BattleshipGame
 
             currentPlayer.Active = false;
             otherPlayer.Active = true;
-        }
-
-        private bool CheckShips(Player player)
-        {
-            foreach (Ship cShip in player.Ships)
-            {
-                if (cShip.cells.Count(x => x.IsHit == false) > 0) return false;
-            }
-            return true;
         }
 
         public void Start()
