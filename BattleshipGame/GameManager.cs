@@ -12,6 +12,8 @@ namespace BattleshipGame
         Player p2;
         bool p2ai;
 
+        public bool InProgress { get; private set; }
+
         public event EventHandler<EventArgs> GameFinished;
 
         public GameManager(string p1name, string p2name, bool ai)
@@ -19,6 +21,8 @@ namespace BattleshipGame
             p1 = new Player(1, p1name);
             p2 = new Player(2, p2name);
             p2ai = ai;
+
+            InProgress = false;
 
             p1.GameEventNotify += Player_GameEvent;
             p2.GameEventNotify += Player_GameEvent;
@@ -43,10 +47,12 @@ namespace BattleshipGame
                     ProcessHit(player, e.Target);
                     break;
                 case GameEvent.Exit:
+                    if (!(p1.Ready || p2.Ready)) Finish();
+                    if (!InProgress) break;
                     switch (player.ID)
                     {
-                        case 1: p2.Close(); Finish(); break;
-                        case 2: p1.Close(); Finish(); break;
+                        case 1: End(p2, p1); break;
+                        case 2: End(p1, p2); break;
                         default:
                             break;
                     }
@@ -71,7 +77,8 @@ namespace BattleshipGame
 
             if(CheckShips(otherPlayer))
             {
-                ///TODO: Game End
+                End(currentPlayer, otherPlayer);
+                return;
             }
 
             currentPlayer.Active = false;
@@ -82,7 +89,7 @@ namespace BattleshipGame
         {
             foreach (Ship cShip in player.Ships)
             {
-                if (cShip.cells.Count(x => !x.IsHit) > 0) return false;
+                if (cShip.cells.Count(x => x.IsHit == false) > 0) return false;
             }
             return true;
         }
@@ -93,9 +100,18 @@ namespace BattleshipGame
             if (!p2ai) p2.Show();
 
             p1.Start();
+
+            InProgress = true;
         }
 
-        void Finish()
+        public void End(Player winner, Player looser)
+        {
+            InProgress = false;
+            winner.End(true);
+            looser.End(false);
+        }
+
+        private void Finish()
         {
             GameFinished?.Invoke(this, new EventArgs());
         }

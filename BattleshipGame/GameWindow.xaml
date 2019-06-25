@@ -7,14 +7,21 @@
         mc:Ignorable="d"
         Title="{Binding Name}"
         Height="450" Width="800"
+        MinHeight="450" MinWidth="800"
         SnapsToDevicePixels="True"
-        UseLayoutRounding="True">
+        UseLayoutRounding="True"
+        Background="SlateGray">
     <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="OwnFieldCanvas" Grid.Column="0" Grid.Row="0" Background="White" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
-        <Canvas x:Name="EnemyFieldCanvas" Grid.Column="1" Grid.Row="1" Background="White" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Canvas x:Name="OwnFieldCanvas" Grid.Column="0" Grid.Row="0" Background="SlateGray" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+        <Canvas x:Name="EnemyFieldCanvas" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Background="SlateGray" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+        <TextBlock x:Name="StatusText" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="Kérlek várj!" />
     </Grid>
 </Window>
