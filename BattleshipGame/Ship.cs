@@ -22,5 +22,24 @@ namespace BattleshipGame
             IsHorizontal = true;
             cells = new List<Cell>();
         }
+
+        public bool Contains(Cell cell)
+        {
+            return cells.Contains(cell);
+        }
+
+        public bool Contains(int row, int col)
+        {
+            return cells.Count(x => x.Row == row && x.Column == col) > 0;
+        }
+
+        public static Ship WhichShip(List<Ship> ships, int row, int col)
+        {
+            foreach (Ship cShip in ships)
+            {
+                if (cShip.Contains(row, col)) return cShip;
+            }
+            return null;
+        }
     }
 }

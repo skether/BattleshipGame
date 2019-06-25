@@ -72,7 +72,11 @@ namespace BattleshipGame
             }
             if (otherPlayer == null) return;
 
-            if (otherPlayer.Hit(cell.Row, cell.Column)) cell.IsShip = true;
+            if (otherPlayer.Hit(cell.Row, cell.Column))
+            {
+                cell.IsShip = true;
+                if (Ship.WhichShip(otherPlayer.Ships, cell.Row, cell.Column).IsSunk) currentPlayer.ShipSunk();
+            }
 
             if(otherPlayer.Ships.Count(x => !x.IsSunk) == 0)
             {
