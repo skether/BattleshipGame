@@ -17,7 +17,7 @@ namespace BattleshipGame
 
         public static string textPleaseWait = "Kérlek várj!";
         public static string textPlaceYourShips = "Helyezd el a hajóidat!";
-        public static string textTakeYourShot = "TODO-Shoot"; ///TODO
+        public static string textTakeYourShot = "Te következel!";
         public static string textYouWin = "Nyertél!";
         public static string textYouLose = "Vesztettél!";
 
