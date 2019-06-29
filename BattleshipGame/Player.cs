@@ -74,7 +74,13 @@ namespace BattleshipGame
             return cell.IsShip;
         }
 
-        public virtual void ShipSunk() { }
+        public virtual void ShipSunk(Ship ship)
+        {
+            foreach (Cell cell in ship.cells)
+            {
+                enemyField[cell.Row, cell.Column].IsSunk = true;
+            }
+        }
 
         protected virtual void Shoot(Cell target)
         {

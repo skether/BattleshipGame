@@ -153,9 +153,9 @@ namespace BattleshipGame
             base.Shoot(target);
         }
 
-        public override void ShipSunk()
+        public override void ShipSunk(Ship ship)
         {
-            base.ShipSunk();
+            base.ShipSunk(ship);
 
             targets.Clear();
             lastTarget = null;

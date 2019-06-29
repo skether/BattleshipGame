@@ -15,6 +15,7 @@ namespace BattleshipGame
         public static Brush waterHitColor = Brushes.Blue;
         public static Brush shipColor = Brushes.Gray;
         public static Brush shipHitColor = Brushes.Red;
+        public static Brush shipSunkColor = Brushes.DarkRed;
         public static Brush highlightColor = Brushes.LimeGreen;
 
         public int Row { get; private set; }
@@ -28,6 +29,9 @@ namespace BattleshipGame
 
         private bool _isHit;
         public bool IsHit { get { return _isHit; } set { _isHit = value; UpdateFill(); } }
+
+        private bool _isSunk;
+        public bool IsSunk { get { return _isSunk; } set { _isSunk = value; UpdateFill(); } }
 
         private RectangleGeometry _geometry;
         protected override Geometry DefiningGeometry { get { return _geometry; } }
@@ -112,7 +116,14 @@ namespace BattleshipGame
             }
             else if(IsShip)
             {
-                this.Fill = IsHit ? shipHitColor : shipColor;
+                if(IsSunk)
+                {
+                    this.Fill = shipSunkColor;
+                }
+                else
+                {
+                    this.Fill = IsHit ? shipHitColor : shipColor;
+                }
             }
             else
             {
