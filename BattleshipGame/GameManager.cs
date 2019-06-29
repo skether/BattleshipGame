@@ -56,6 +56,10 @@ namespace BattleshipGame
                             break;
                     }
                     break;
+                case GameEvent.WindowShowKey:
+                    if (player.ID != 1) break;
+                    if(p2 is ArtificialPlayer) p2.ToggleVisibility();
+                    break;
                 default:
                     break;
             }
@@ -120,7 +124,8 @@ namespace BattleshipGame
     {
         PlacementFinished,
         Hit,
-        Exit
+        Exit,
+        WindowShowKey
     }
 
     public class GameEventArgs : EventArgs
