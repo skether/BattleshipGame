@@ -23,6 +23,14 @@ namespace BattleshipGame
             cells = new List<Cell>();
         }
 
+        public void MarkSunk()
+        {
+            foreach (Cell cell in cells)
+            {
+                cell.IsSunk = true;
+            }
+        }
+
         public bool Contains(Cell cell)
         {
             return cells.Contains(cell);

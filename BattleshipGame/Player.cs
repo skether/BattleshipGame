@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace BattleshipGame
@@ -17,7 +18,7 @@ namespace BattleshipGame
 
         public static string textPleaseWait = "Kérlek várj!";
         public static string textPlaceYourShips = "Helyezd el a hajóidat!";
-        public static string textTakeYourShot = "TODO-Shoot"; ///TODO
+        public static string textTakeYourShot = "Te következel!";
         public static string textYouWin = "Nyertél!";
         public static string textYouLose = "Vesztettél!";
 
@@ -28,6 +29,8 @@ namespace BattleshipGame
         protected bool _active;
         public bool Active { get { return _active; } set { _active = value; ManageTurn(); } }
         public bool Ready { get; protected set; }
+        public bool IsHidden { get { return window.Visibility == Visibility.Hidden; } }
+        public bool AllowClose { get; set; }
 
         protected Brush BackgroundColor { get { return window.Background; } set { window.Background = value; window.OwnFieldCanvas.Background = value; window.EnemyFieldCanvas.Background = value; } }
 
@@ -42,13 +45,24 @@ namespace BattleshipGame
             ID = id;
             Name = name;
 
+            Ready = false;
             _active = false;
+            AllowClose = true;
             
             Ships = new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) };
 
             window = new GameWindow(this);
+            window.KeyUp += Window_KeyUp;
             window.Closed += Window_Closed;
             window.Loaded += Window_Loaded;
+        }
+
+        private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Tab)
+            {
+                GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.WindowShowKey, null));
+            }
         }
 
         protected virtual void Window_Closed(object sender, EventArgs e)
@@ -74,7 +88,13 @@ namespace BattleshipGame
             return cell.IsShip;
         }
 
-        public virtual void ShipSunk() { }
+        public virtual void ShipSunk(Ship ship)
+        {
+            foreach (Cell cell in ship.cells)
+            {
+                enemyField[cell.Row, cell.Column].IsSunk = true;
+            }
+        }
 
         protected virtual void Shoot(Cell target)
         {
@@ -89,11 +109,11 @@ namespace BattleshipGame
         public abstract void Start();
 
         protected virtual void ManageTurn()
-        {
+        { 
             if (Active)
             {
                 BackgroundColor = activeBackground;
-                window.StatusText.Text = textTakeYourShot;
+                window.StatusText.Text = textTakeYourShot; 
             }
             else
             {
@@ -105,7 +125,7 @@ namespace BattleshipGame
 
         protected abstract void ActTurn();
 
-        public void End(bool victory)
+        public virtual void End(bool victory)
         {
             Active = false;
             BackgroundColor = victory ? victoryBackground : loseBackground;
@@ -115,6 +135,23 @@ namespace BattleshipGame
         public void Show() { window.Show(); }
 
         public void Hide() { window.Hide(); }
+
+        public void ToggleVisibility()
+        {
+            switch (window.Visibility)
+            {
+                case Visibility.Visible:
+                    window.Hide();
+                    break;
+                case Visibility.Hidden:
+                    window.Show();
+                    break;
+                case Visibility.Collapsed:
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public void Close() { window.Close(); }
 

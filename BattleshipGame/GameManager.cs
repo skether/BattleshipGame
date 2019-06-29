@@ -56,6 +56,10 @@ namespace BattleshipGame
                             break;
                     }
                     break;
+                case GameEvent.WindowShowKey:
+                    if (player.ID != 1) break;
+                    if(p2 is ArtificialPlayer) p2.ToggleVisibility();
+                    break;
                 default:
                     break;
             }
@@ -75,7 +79,12 @@ namespace BattleshipGame
             if (otherPlayer.Hit(cell.Row, cell.Column))
             {
                 cell.IsShip = true;
-                if (Ship.WhichShip(otherPlayer.Ships, cell.Row, cell.Column).IsSunk) currentPlayer.ShipSunk();
+                Ship ship = Ship.WhichShip(otherPlayer.Ships, cell.Row, cell.Column);
+                if (ship.IsSunk)
+                {
+                    ship.MarkSunk();
+                    currentPlayer.ShipSunk(ship);
+                }
             }
 
             if(otherPlayer.Ships.Count(x => !x.IsSunk) == 0)
@@ -115,7 +124,8 @@ namespace BattleshipGame
     {
         PlacementFinished,
         Hit,
-        Exit
+        Exit,
+        WindowShowKey
     }
 
     public class GameEventArgs : EventArgs

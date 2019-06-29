@@ -20,6 +20,8 @@ namespace BattleshipGame
 
         public ArtificialPlayer(int id, string name) : base(id, name)
         {
+            AllowClose = false;
+
             targets = new List<Cell>();
             lastTarget = null;
             currentTargetAnchor = null;
@@ -32,6 +34,15 @@ namespace BattleshipGame
             base.Window_Loaded(sender, e);
             
             ownField.PlacementFinished += OwnField_PlacementFinished;
+
+            window.Closing += Window_Closing;
+            window.Hide();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            window.Hide();
+            e.Cancel = !AllowClose;
         }
 
         private void OwnField_PlacementFinished(object sender, PlacementFinishedEventArgs e)
@@ -153,9 +164,9 @@ namespace BattleshipGame
             base.Shoot(target);
         }
 
-        public override void ShipSunk()
+        public override void ShipSunk(Ship ship)
         {
-            base.ShipSunk();
+            base.ShipSunk(ship);
 
             targets.Clear();
             lastTarget = null;
@@ -176,6 +187,13 @@ namespace BattleshipGame
         private void AddTarget(Cell cell)
         {
             if (!cell.IsHit) targets.Add(cell);
+        }
+
+        public override void End(bool victory)
+        {
+            base.End(victory);
+            AllowClose = true;
+            window.Close();
         }
     }
 }
