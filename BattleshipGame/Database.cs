@@ -9,9 +9,12 @@ namespace BattleshipGame
 {
     public class MatchResult
     {
+        public int Id { get; set; }
         public string Winner { get; set; }
         public string Looser { get; set; }
         public DateTime PlayedAt { get; set; }
+
+        public MatchResult() { }
 
         public MatchResult(string winner, string looser, DateTime time)
         {
@@ -39,7 +42,8 @@ namespace BattleshipGame
             using (LiteDatabase db = new LiteDatabase(dbFile))
             {
                 LiteCollection<MatchResult> collection = db.GetCollection<MatchResult>("History");
-                return collection.FindAll();
+                IEnumerable<MatchResult> all = collection.FindAll();
+                return all;
             }
         }
     }
