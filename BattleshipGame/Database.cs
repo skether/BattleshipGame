@@ -1,3 +1,4 @@
+﻿using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,29 @@ namespace BattleshipGame
             Winner = winner;
             Looser = looser;
             PlayedAt = time;
+        }
+    }
+
+    public static class Database
+    {
+        private const string dbFile = "history.db";
+
+        public static void AddResult(MatchResult result)
+        {
+            using (LiteDatabase db = new LiteDatabase(dbFile))
+            {
+                LiteCollection<MatchResult> collection = db.GetCollection<MatchResult>("History");
+                collection.Insert(result);
+            }
+        }
+
+        public static IEnumerable<MatchResult> GetHistory()
+        {
+            using (LiteDatabase db = new LiteDatabase(dbFile))
+            {
+                LiteCollection<MatchResult> collection = db.GetCollection<MatchResult>("History");
+                return collection.FindAll();
+            }
         }
     }
 }
