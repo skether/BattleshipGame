@@ -32,6 +32,7 @@ namespace BattleshipGame
         private void LoadData()
         {
             historyBoard.ItemsSource = Database.GetHistory();
+            leaderBoard.ItemsSource = Database.GetLeaderBoard();
         }
 
         private void PlayerTwoAICheckbox_Checked(object sender, RoutedEventArgs e)
