@@ -6,22 +6,52 @@
         xmlns:local="clr-namespace:BattleshipGame"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <DataTemplate x:Key="historyTemplate">
+            <Grid Margin="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="15"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="20" FontWeight="Bold" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Winner}"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="-"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" FontSize="20" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Looser}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding PlayedAt}"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBox x:Name="playerOneName" Grid.Row="0" Grid.Column="0" Margin="10" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Text="Játékos 1" Tag="Játékos 1" />
         
-        <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Margin="10" Height="50" Content="Start" Click="StartGame" />
+        <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="10" Height="50" Content="Start" Click="StartGame" />
 
-        <TextBox x:Name="playerTwoName" Grid.Row="0" Grid.Column="2" Margin="10" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Text="Játékos 2" Tag="Játékos 2" />
-        <CheckBox x:Name="playerTwoAICheckbox" Grid.Row="1" Grid.Column="2" Margin="10" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Content="AI" Checked="PlayerTwoAICheckbox_Checked" Unchecked="PlayerTwoAICheckbox_Unchecked" />
+        <TextBox x:Name="playerTwoName" Grid.Row="0" Grid.Column="3" Margin="10" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Text="Játékos 2" Tag="Játékos 2" />
+        <CheckBox x:Name="playerTwoAICheckbox" Grid.Row="1" Grid.Column="3" Margin="10" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Content="AI" Checked="PlayerTwoAICheckbox_Checked" Unchecked="PlayerTwoAICheckbox_Unchecked" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ranglista"/>
+        <ListBox x:Name="leaderBoard" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" HorizontalContentAlignment="Stretch" />
+
+        <TextBlock Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="10" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Előző mérkőzések eredménye"/>
+        <ListBox x:Name="historyBoard" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="10" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource historyTemplate}" />
     </Grid>
 </Window>

@@ -42,8 +42,7 @@ namespace BattleshipGame
             using (LiteDatabase db = new LiteDatabase(dbFile))
             {
                 LiteCollection<MatchResult> collection = db.GetCollection<MatchResult>("History");
-                IEnumerable<MatchResult> all = collection.FindAll();
-                return all;
+                return collection.FindAll().OrderByDescending(x => x.PlayedAt);
             }
         }
     }
