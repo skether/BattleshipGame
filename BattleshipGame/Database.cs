@@ -30,7 +30,7 @@ namespace BattleshipGame
         public int Won { get; set; }
         public int Lost { get; set; }
         public int Played { get { return Won + Lost; } }
-        public double WinRate { get { return Won / (double)Played; } }
+        public double WinRate { get { return Won / (double)Played * 100; } }
 
         public PlayerStatistics(string name)
         {
