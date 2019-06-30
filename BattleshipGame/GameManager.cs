@@ -109,6 +109,7 @@ namespace BattleshipGame
 
         public void End(Player winner, Player looser)
         {
+            Database.AddResult(new MatchResult(winner.Name, looser.Name, DateTime.Now));
             InProgress = false;
             winner.End(true);
             looser.End(false);

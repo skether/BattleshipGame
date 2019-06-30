@@ -25,6 +25,14 @@ namespace BattleshipGame
         public MainWindow()
         {
             InitializeComponent();
+
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            historyBoard.ItemsSource = Database.GetHistory();
+            leaderBoard.ItemsSource = Database.GetLeaderBoard();
         }
 
         private void PlayerTwoAICheckbox_Checked(object sender, RoutedEventArgs e)
@@ -67,6 +75,7 @@ namespace BattleshipGame
         {
             this.Show();
             gameManager = null;
+            LoadData();
         }
     }
 }
