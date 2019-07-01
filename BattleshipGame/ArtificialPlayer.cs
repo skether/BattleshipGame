@@ -41,7 +41,7 @@ namespace BattleshipGame
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            window.Hide();
+            if (!AllowClose) window.Hide();
             e.Cancel = !AllowClose;
         }
 
@@ -193,7 +193,6 @@ namespace BattleshipGame
         {
             base.End(victory);
             AllowClose = true;
-            window.Close();
         }
     }
 }

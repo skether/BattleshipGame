@@ -57,14 +57,28 @@ namespace BattleshipGame
                     break;
 
                 case GameEvent.Exit:
-                    if (!(p1.Ready || p2.Ready)) Finish();
-                    if (!InProgress) break;
-                    switch (player.ID)
+                    if (!(p1.Ready || p2.Ready)) Finish(); //Finish when all windows are closed
+
+                    if (InProgress) //Handle forfeit
                     {
-                        case 1: End(p2, p1); break;
-                        case 2: End(p1, p2); break;
-                        default:
-                            break;
+                        switch (player.ID)
+                        {
+                            case 1: End(p2, p1); break;
+                            case 2: End(p1, p2); break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    if (!InProgress && player is HumanPlayer) //Close the AI window if any
+                    {
+                        switch (player.ID)
+                        {
+                            case 1: if (p2 is ArtificialPlayer && p2.IsHidden) p2.Close(); break;
+                            case 2: if (p1 is ArtificialPlayer && p1.IsHidden) p1.Close(); break;
+                            default:
+                                break;
+                        }
                     }
                     break;
 
