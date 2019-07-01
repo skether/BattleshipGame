@@ -48,7 +48,7 @@ namespace BattleshipGame
             Ready = false;
             _active = false;
             AllowClose = true;
-            
+
             Ships = new List<Ship>() { new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2) };
 
             window = new GameWindow(this);
@@ -59,7 +59,7 @@ namespace BattleshipGame
 
         private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Tab)
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Tab)
             {
                 GameEventNotify?.Invoke(this, new GameEventArgs(GameEvent.WindowShowKey, null));
             }
@@ -109,11 +109,11 @@ namespace BattleshipGame
         public abstract void Start();
 
         protected virtual void ManageTurn()
-        { 
+        {
             if (Active)
             {
                 BackgroundColor = activeBackground;
-                window.StatusText.Text = textTakeYourShot; 
+                window.StatusText.Text = textTakeYourShot;
             }
             else
             {

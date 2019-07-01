@@ -48,7 +48,7 @@ namespace BattleshipGame
                 if (stats.ContainsKey(item.Looser)) stats[item.Looser].Lost++;
                 else stats.Add(item.Looser, new PlayerStatistics(item.Looser) { Lost = 1 });
             }
-            return stats.Values.ToList<PlayerStatistics>().OrderByDescending(x => x.WinRate).ThenByDescending(x=> x.Played).ThenBy(x => x.Name);
+            return stats.Values.ToList<PlayerStatistics>().OrderByDescending(x => x.WinRate).ThenByDescending(x => x.Played).ThenBy(x => x.Name);
         }
     }
 

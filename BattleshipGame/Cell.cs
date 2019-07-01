@@ -110,13 +110,13 @@ namespace BattleshipGame
 
         private void UpdateFill()
         {
-            if(IsHighlighted)
+            if (IsHighlighted)
             {
                 this.Fill = highlightColor;
             }
-            else if(IsShip)
+            else if (IsShip)
             {
-                if(IsSunk)
+                if (IsSunk)
                 {
                     this.Fill = shipSunkColor;
                 }
