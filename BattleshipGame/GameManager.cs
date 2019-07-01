@@ -42,9 +42,11 @@ namespace BattleshipGame
                             break;
                     }
                     break;
+
                 case GameEvent.Hit:
                     ProcessHit(player, e.Target);
                     break;
+
                 case GameEvent.Exit:
                     if (!(p1.Ready || p2.Ready)) Finish();
                     if (!InProgress) break;
@@ -56,10 +58,12 @@ namespace BattleshipGame
                             break;
                     }
                     break;
+
                 case GameEvent.WindowShowKey:
                     if (player.ID != 1) break;
-                    if(p2 is ArtificialPlayer) p2.ToggleVisibility();
+                    if (p2 is ArtificialPlayer) p2.ToggleVisibility();
                     break;
+
                 default:
                     break;
             }
@@ -87,7 +91,7 @@ namespace BattleshipGame
                 }
             }
 
-            if(otherPlayer.Ships.Count(x => !x.IsSunk) == 0)
+            if (otherPlayer.Ships.Count(x => !x.IsSunk) == 0)
             {
                 End(currentPlayer, otherPlayer);
                 return;
@@ -107,7 +111,7 @@ namespace BattleshipGame
             InProgress = true;
         }
 
-        public void End(Player winner, Player looser)
+        private void End(Player winner, Player looser)
         {
             Database.AddResult(new MatchResult(winner.Name, looser.Name, DateTime.Now));
             InProgress = false;
