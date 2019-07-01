@@ -58,6 +58,19 @@ namespace BattleshipGame
                 MessageBox.Show("Nem játszhatsz önmagad ellen! :)", "Hiba!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
+
+            if (playerOneName.Text == "AI")
+            {
+                MessageBox.Show("Nem nevezheted magad \"AI\"-nak", "Hiba!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (playerTwoName.Text == "AI" && !(playerTwoAICheckbox.IsChecked ?? false))
+            {
+                MessageBox.Show("Nem nevezheted magad \"AI\"-nak", "Hiba!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
             return true;
         }
 
