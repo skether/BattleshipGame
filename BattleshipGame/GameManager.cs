@@ -17,9 +17,18 @@ namespace BattleshipGame
 
         public GameManager(string p1name, string p2name, bool ai)
         {
-            p1 = new HumanPlayer(1, p1name);
-            if (ai) p2 = new ArtificialPlayer(2, p2name);
-            else p2 = new HumanPlayer(2, p2name);
+            if ((new Random()).Next(2) == 0)
+            {
+                p1 = new HumanPlayer(1, p1name);
+                if (ai) p2 = new ArtificialPlayer(2, p2name);
+                else p2 = new HumanPlayer(2, p2name);
+            }
+            else
+            {
+                if (ai) p1 = new ArtificialPlayer(1, p2name);
+                else p1 = new HumanPlayer(1, p2name);
+                p2 = new HumanPlayer(2, p1name);
+            }
 
             InProgress = false;
 
@@ -60,8 +69,9 @@ namespace BattleshipGame
                     break;
 
                 case GameEvent.WindowShowKey:
-                    if (player.ID != 1) break;
-                    if (p2 is ArtificialPlayer) p2.ToggleVisibility();
+                    if (player is ArtificialPlayer) break;
+                    if (p1 is ArtificialPlayer) p1.ToggleVisibility();
+                    else if (p2 is ArtificialPlayer) p2.ToggleVisibility();
                     break;
 
                 default:
@@ -83,6 +93,7 @@ namespace BattleshipGame
             if (otherPlayer.Hit(cell.Row, cell.Column))
             {
                 cell.IsShip = true;
+                currentPlayer.HitCount++;
                 Ship ship = Ship.WhichShip(otherPlayer.Ships, cell.Row, cell.Column);
                 if (ship.IsSunk)
                 {
