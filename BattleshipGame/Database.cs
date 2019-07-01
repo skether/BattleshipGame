@@ -36,6 +36,20 @@ namespace BattleshipGame
         {
             Name = name;
         }
+
+        public static IEnumerable<PlayerStatistics> CalculateLeaderBoard(IEnumerable<MatchResult> history)
+        {
+            Dictionary<string, PlayerStatistics> stats = new Dictionary<string, PlayerStatistics>();
+            foreach (MatchResult item in history)
+            {
+                if (stats.ContainsKey(item.Winner)) stats[item.Winner].Won++;
+                else stats.Add(item.Winner, new PlayerStatistics(item.Winner) { Won = 1 });
+
+                if (stats.ContainsKey(item.Looser)) stats[item.Looser].Lost++;
+                else stats.Add(item.Looser, new PlayerStatistics(item.Looser) { Lost = 1 });
+            }
+            return stats.Values.ToList<PlayerStatistics>().OrderByDescending(x => x.WinRate).ThenByDescending(x => x.Played).ThenBy(x => x.Name);
+        }
     }
 
     public static class Database
@@ -58,20 +72,6 @@ namespace BattleshipGame
                 LiteCollection<MatchResult> collection = db.GetCollection<MatchResult>("History");
                 return collection.FindAll().OrderByDescending(x => x.PlayedAt);
             }
-        }
-
-        public static IEnumerable<PlayerStatistics> GetLeaderBoard()
-        {
-            Dictionary<string, PlayerStatistics> stats = new Dictionary<string, PlayerStatistics>();
-            foreach (MatchResult item in GetHistory())
-            {
-                if (stats.ContainsKey(item.Winner)) stats[item.Winner].Won++;
-                else stats.Add(item.Winner, new PlayerStatistics(item.Winner) { Won = 1});
-
-                if (stats.ContainsKey(item.Looser)) stats[item.Looser].Lost++;
-                else stats.Add(item.Looser, new PlayerStatistics(item.Looser) { Lost = 1 });
-            }
-            return stats.Values.ToList<PlayerStatistics>().OrderByDescending(x=> x.WinRate).ThenBy(y=> y.Name);
         }
     }
 }

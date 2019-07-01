@@ -28,13 +28,18 @@ namespace BattleshipGame
 
         private void OwnField_PlacementFinished(object sender, PlacementFinishedEventArgs e)
         {
+            BackgroundColor = inactiveBackground;
+            window.StatusText.Text = textPleaseWait;
+
             RaisePlacementFinished();
         }
 
         public override void Start()
         {
-            ownField.PlaceShips(Ships);
+            BackgroundColor = activeBackground;
             window.StatusText.Text = textPlaceYourShips;
+
+            ownField.PlaceShips(Ships);
         }
 
         protected override void ActTurn()

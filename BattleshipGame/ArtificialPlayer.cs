@@ -32,7 +32,7 @@ namespace BattleshipGame
         protected override void Window_Loaded(object sender, RoutedEventArgs e)
         {
             base.Window_Loaded(sender, e);
-            
+
             ownField.PlacementFinished += OwnField_PlacementFinished;
 
             window.Closing += Window_Closing;
@@ -84,7 +84,7 @@ namespace BattleshipGame
 
         protected override void ActTurn()
         {
-            if(Active)
+            if (Active)
             {
                 if (currentTargetAnchor == null && lastTarget != null && lastTarget.IsShip) //Check if last target was a ship
                 {
@@ -95,7 +95,7 @@ namespace BattleshipGame
                     if (lastTarget.Column + 1 < PlayField.ColumnCount) AddTarget(enemyField[lastTarget.Row, lastTarget.Column + 1]);
                 }
 
-                if(currentTargetAnchor == null) //No known cell, Pick a random cell
+                if (currentTargetAnchor == null) //No known cell, Pick a random cell
                 {
                     Cell target = null;
                     do
@@ -107,15 +107,15 @@ namespace BattleshipGame
                 }
                 else //Select target from available targets
                 {
-                    if(currentTargetAnchor == lastTarget) //Only one known cell, Pick a random cell from the targets
+                    if (currentTargetAnchor == lastTarget) //Only one known cell, Pick a random cell from the targets
                     {
                         Shoot(GetRandomCell(targets));
                     }
                     else
                     {
-                        if(currentTargetDirection == null && lastTarget.IsShip) //Calculate direction of the ship
+                        if (currentTargetDirection == null && lastTarget.IsShip) //Calculate direction of the ship
                         {
-                            if(lastTarget.Row == currentTargetAnchor.Row) //Horizontal, remove vertical targets
+                            if (lastTarget.Row == currentTargetAnchor.Row) //Horizontal, remove vertical targets
                             {
                                 targets.RemoveAll(x => x.Row != currentTargetAnchor.Row);
                                 currentTargetDirection = true;
@@ -127,7 +127,7 @@ namespace BattleshipGame
                             }
                         }
 
-                        if(currentTargetDirection == true && lastTarget.IsShip) //Horizontal
+                        if (currentTargetDirection == true && lastTarget.IsShip) //Horizontal
                         {
                             if (lastTarget.Column < currentTargetAnchor.Column)
                             {
@@ -138,7 +138,7 @@ namespace BattleshipGame
                                 if (lastTarget.Column + 1 < PlayField.ColumnCount) AddTarget(enemyField[currentTargetAnchor.Row, lastTarget.Column + 1]);
                             }
                         }
-                        else if(currentTargetDirection == false && lastTarget.IsShip) //Vertical
+                        else if (currentTargetDirection == false && lastTarget.IsShip) //Vertical
                         {
                             if (lastTarget.Row < currentTargetAnchor.Row)
                             {
