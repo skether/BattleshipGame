@@ -20,8 +20,32 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
+        
         <Canvas x:Name="OwnFieldCanvas" Grid.Column="0" Grid.Row="0" Background="SlateGray" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
         <Canvas x:Name="EnemyFieldCanvas" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Background="SlateGray" SnapsToDevicePixels="True" UseLayoutRounding="True"/>
-        <TextBlock x:Name="StatusText" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="Kérlek várj!" />
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">
+                <Run Text="Kör:" />
+                <Run x:Name="round" Text="" />
+            </TextBlock>
+
+            <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16">
+                <Run Text="Találat:" />
+                <Run x:Name="hitcount" Text="" />
+                <Run Text="/" />
+                <Run x:Name="maxhitcount" Text="" />
+            </TextBlock>
+
+            <TextBlock x:Name="StatusText" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="Kérlek várj!" />
+        </Grid>
     </Grid>
 </Window>

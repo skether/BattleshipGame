@@ -26,6 +26,12 @@ namespace BattleshipGame
         public string Name { get; protected set; }
         public List<Ship> Ships { get; protected set; }
 
+        private int _round;
+        public int Round { get { return _round; } set { _round = value; window.round.Text = _round.ToString(); } }
+
+        private int _hitCount;
+        public int HitCount { get { return _hitCount; } set { _hitCount = value; window.hitcount.Text = _hitCount.ToString(); } }
+
         protected bool _active;
         public bool Active { get { return _active; } set { _active = value; ManageTurn(); } }
         public bool Ready { get; protected set; }
@@ -78,6 +84,10 @@ namespace BattleshipGame
             ownField = new PlayField(window.OwnFieldCanvas);
             enemyField = new PlayField(window.EnemyFieldCanvas);
 
+            Round = 0;
+            HitCount = 0;
+            window.maxhitcount.Text = Ships.Sum(x => x.Size).ToString();
+
             Ready = true;
         }
 
@@ -114,6 +124,7 @@ namespace BattleshipGame
             {
                 BackgroundColor = activeBackground;
                 window.StatusText.Text = textTakeYourShot;
+                Round++;
             }
             else
             {
